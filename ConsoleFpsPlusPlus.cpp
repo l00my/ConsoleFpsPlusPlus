@@ -12,9 +12,9 @@ using namespace std;
 int nScreenWidth = 120;
 int nScreenHeight = 40;
 
-float fPlayerX = 8.0f;
-float fPlayerY = 8.0f;
-float fPlayerAngle = 0.0f;
+float fPlayerX = 5.0f;
+float fPlayerY = 10.0f;
+float fPlayerAngle = -0.5f;
 
 int nMapHeight = 16;
 int nMapWidth = 16;
@@ -62,12 +62,12 @@ int main()
 		// Handle player rotation
 		if (GetAsyncKeyState((unsigned short)'A') & 0x8000)
 		{
-			fPlayerAngle -= (5.0f) * fElapsedTime;
+			fPlayerAngle -= (3.0f) * fElapsedTime;
 		}
 
 		if (GetAsyncKeyState((unsigned short)'D') & 0x8000)
 		{
-			fPlayerAngle += (5.0f) * fElapsedTime;
+			fPlayerAngle += (3.0f) * fElapsedTime;
 		}
 
 		if (GetAsyncKeyState((unsigned short)'W') & 0x8000)
@@ -122,7 +122,10 @@ int main()
 				else
 				{
 					// Ray is inbounds so test to see if the ray cell is a wall block
-					if (map[nTestX * nMapWidth + nTestY] == '#')
+					// check here is causing rendering issue - is rendering flipped xy values e.g. 5,10 will render at 10,5
+					// changed from video code (map[nTestX * nMapWidth + nTestY]) to the below (map[nTestY * nMapWidth + nTestX])
+					// I am unsure why this was causing values to be flipped. This works in the video.
+					if (map[nTestY * nMapWidth + nTestX] == '#')
 					{
 						bHitWall = true;
 
